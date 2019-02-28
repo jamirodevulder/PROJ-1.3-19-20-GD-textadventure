@@ -1,5 +1,5 @@
 ## MaQuest
-gamedeveloper :[jouw naam]
+gamedeveloper :[Jamiro de Vulder]
 
 ### Korte omschrijving van de game
 ...
