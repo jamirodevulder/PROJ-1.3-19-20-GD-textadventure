@@ -9,6 +9,20 @@ const myInventory = document.getElementById('inventory');
 let currentLocation = 4;
 
 let locations = [];
+let items = [];
+let inventoryslots = [];
+myInventory.innerHTML = "inventory :  "
+
+
+let itemspickup = [];
+
+itemspickup[0] = " er licht hier een sleutel die je kan op pakken";
+
+
+items[0] = "sleutel";
+
+
+
 locations[0] = "kantine";
 locations[1] = "trap";
 locations[2] = "eind";
@@ -42,16 +56,19 @@ directions[7] = ["noord", "west", "oost"];
 directions[8] = ["noord", "west"];
 
 descriptions = [];
+function changeDescription(){
 descriptions[0] = "u staat in een kantine. Hier zitten studenten te eten of computerspelletjes te doen";
-descriptions[1] = "u staat op een trap naar de eerste etage. Om u heen lopen studenten omhoog en omlaag";
+descriptions[1] = "u staat op een trap naar de eerste etage. Om u heen lopen studenten omhoog en omlaag ";
 descriptions[2] = "u heeft gewonnen";
-descriptions[3] = "u staat in de lerarenkamer. De leraren eten hier hun lunch of drinken koffie of thee";
+descriptions[3] = "u staat in de lerarenkamer. De leraren eten hier hun lunch of drinken koffie of thee hier";
 descriptions[4] = "u staat in een gang. Studenten en leraren lopen richting de klaslokalen";
 descriptions[5] = "u staat in het medialab. Hier kan geexperimenteerd worden met bijvoorbeeld virtual reality brillen";
-descriptions[6] = "u staat bij de toiletten";
+descriptions[6] = "u staat bij de toiletten" + itemspickup[0];
 descriptions[7] = "u staat in een klaslokaal. De tafels staan recht achter elkaar en voorin is een projector en een smartboard";
 descriptions[8] = "u staat in het examenlokaal. Hier zijn de vierdejaars studenten bezig met het voorbereiden van hun examen";
+}
 
+changeDescription();
 myInput.addEventListener('keydown', getInput, false);
 
 function getInput(evt) {
@@ -84,13 +101,34 @@ function getInput(evt) {
     }
 
     if (inputArray[0] == "pak") {
-      console.log('ga wat pakken');
-      myInput.value = "";
+      for (var i = 0; i < items.length; i++) {
+
+      if(inputArray[1] == items[i])
+      {
+        for (var i = 0; i < items.length; i++) {
+          if(descriptions[currentLocation].includes(items[i]))
+          {
+            console.log("dit werkt");
+            myInput.value = "";
+            itemspickup[0] = "";
+            changeDescription();
+            descriptions[currentLocation].innerHTML = description[currentLocation] - itemspickup[0] ;
+            myInventory.innerHTML = myInventory.innerHTML + items[i] + " , " ;
+            giveLocation();
+          }
+      }
     }
+  }
+}
 
     if (inputArray[0] == "gebruik"){
+
+
       console.log('ga wat gebruiken');
       myInput.value = "";
+
+
+
     }
 
     if (inputArray[0] != "ga" && inputArray[0] != "pak" && inputArray[0] != "gebruik" ){
@@ -111,7 +149,7 @@ function giveLocation() {
     myDirections += "<li>" + directions[currentLocation][i] + "</li>";
   }
   myPossibilities.innerHTML = myDirections;
-  myInventory.innerHTML = "uw inventory is leeg";
+  myInventory.innerHTML = myInventory.innerHTML;
 }
 
 function removeFeedback() {
