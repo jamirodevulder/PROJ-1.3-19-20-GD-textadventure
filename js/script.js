@@ -11,16 +11,17 @@ let currentLocation = 4;
 let locations = [];
 let items = [];
 let inventoryslots = [];
-myInventory.innerHTML = "inventory :  "
 
 
 let itemspickup = [];
 
 itemspickup[0] = " er licht hier een sleutel die je kan op pakken";
-
+itemspickup[1] = " je wild de koffie machine gebruiken alleen zit er een slot op zoek naar iets waardoor je hem kan openen";
 
 items[0] = "sleutel";
-
+myInventory.innerHTML = "inventory :  ";
+let usableItems= [];
+usableItems[0] = "slot";
 
 
 locations[0] = "kantine";
@@ -60,8 +61,8 @@ function changeDescription(){
 descriptions[0] = "u staat in een kantine. Hier zitten studenten te eten of computerspelletjes te doen";
 descriptions[1] = "u staat op een trap naar de eerste etage. Om u heen lopen studenten omhoog en omlaag ";
 descriptions[2] = "u heeft gewonnen";
-descriptions[3] = "u staat in de lerarenkamer. De leraren eten hier hun lunch of drinken koffie of thee hier";
-descriptions[4] = "u staat in een gang. Studenten en leraren lopen richting de klaslokalen";
+descriptions[3] = "u staat in de lerarenkamer. De leraren eten hier hun lunch of drinken koffie of thee hier" + itemspickup[1];
+descriptions[4] = "u staat in een gang. Studenten en leraren lopen richting de klaslokalen. je hebt zelf trek in koffie zoek de leerarenkamer";
 descriptions[5] = "u staat in het medialab. Hier kan geexperimenteerd worden met bijvoorbeeld virtual reality brillen";
 descriptions[6] = "u staat bij de toiletten" + itemspickup[0];
 descriptions[7] = "u staat in een klaslokaal. De tafels staan recht achter elkaar en voorin is een projector en een smartboard";
@@ -100,6 +101,8 @@ function getInput(evt) {
       myInput.value = "";
     }
 
+
+
     if (inputArray[0] == "pak") {
       for (var i = 0; i < items.length; i++) {
 
@@ -108,25 +111,63 @@ function getInput(evt) {
         for (var i = 0; i < items.length; i++) {
           if(descriptions[currentLocation].includes(items[i]))
           {
+            if(itemspickup[i] != "")
+            {
             console.log("dit werkt");
             myInput.value = "";
-            itemspickup[0] = "";
+            itemspickup[i] = "";
             changeDescription();
-            descriptions[currentLocation].innerHTML = description[currentLocation] - itemspickup[0] ;
-            myInventory.innerHTML = myInventory.innerHTML + items[i] + " , " ;
+            descriptions[currentLocation].innerHTML = description[currentLocation] - itemspickup[i] ;
+            myInventory.innerHTML = myInventory.innerHTML + items[i] +  " , ";
             giveLocation();
+            }
+            else {
+              feedback.innerHTML = "je kan hier dit niet op pakken";
+              myInput.value = "";
+              setTimeout(removeFeedback, 4000);
+            }
           }
       }
     }
   }
 }
 
+
+
+
     if (inputArray[0] == "gebruik"){
 
+      for (var i = 0; i < items.length; i++) {
+       if(myInventory.innerHTML.includes(items[i]))
+       {
+            if(descriptions[currentLocation].includes("slot") && myInventory.innerHTML.includes(items[i]))
+            {
+              for (var i = 0; i < itemspickup.length; i++) {
+               if(itemspickup.includes("slot"))
+               {
+                 itemspickup[i] = "";
+               }
+              }
 
-      console.log('ga wat gebruiken');
-      myInput.value = "";
 
+              myInput.value = "";
+              items[i]= "";
+              itemspickup[i]= "";
+              changeDescription();
+              descriptions[3].innerHTML = "je hebt een heerlijke bakkie koffie! u heeft gewonnen";
+              alert("u heeft gewonnen");
+              myInventory.innerHTML = "inventory : ";
+              location.reload();
+              giveLocation();
+
+            }
+            else {
+              feedback.innerHTML = "je kan hier niks gebruiken of je gebruikt niet het goeie item";
+              myInput.value = "";
+              setTimeout(removeFeedback, 4000);
+            }
+       }
+      }
 
 
     }
